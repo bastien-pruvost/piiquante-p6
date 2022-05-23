@@ -2,9 +2,9 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 
-require('./database');
-
 const app = express();
+
+require('./configs/database.config');
 
 // --- GENERAL MIDDLEWARES ---
 app.use(express.static(path.join(__dirname, 'public')));
