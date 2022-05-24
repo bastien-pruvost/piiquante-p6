@@ -1,7 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
-const argon2 = require('./configs/argon2.config');
 const routing = require('./routes');
 
 const app = express();
