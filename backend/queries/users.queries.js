@@ -14,10 +14,18 @@ exports.createUser = async (user) => {
   }
 };
 
-exports.findUser = async (user) => {
+exports.findUserByEmail = async (email) => {
   try {
-    return User.findOne({ email: user.email }).exec();
+    return User.findOne({ email }).exec();
   } catch (err) {
-    throw new Error(`Error when finding user in DB : ${err}`);
+    throw new Error(`Error when searching user by email in DB : ${err}`);
+  }
+};
+
+exports.findUserById = async (id) => {
+  try {
+    return User.findOne({ _id: id }).exec();
+  } catch (err) {
+    throw new Error(`Error when searching user by id in DB : ${err}`);
   }
 };
