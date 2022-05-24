@@ -7,7 +7,7 @@ exports.hashPassword = async (password) => {
       memoryCost: 16384,
     });
   } catch (err) {
-    throw new Error(`Error with encrypting : ${err}`);
+    throw new Error(`Erreur d'encryptage' : ${err}`);
   }
 };
 
@@ -15,6 +15,6 @@ exports.verifyPassword = async (password, encryptedPassword) => {
   try {
     return await argon2.verify(encryptedPassword, password);
   } catch (err) {
-    throw new Error(`Error with decrypting : ${err}`);
+    throw new Error(`Erreur de décryptage : ${err}`);
   }
 };
