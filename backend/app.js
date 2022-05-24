@@ -1,9 +1,12 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
+const argon2 = require('./configs/argon2.config');
+const routing = require('./routes');
 
 const app = express();
 
+// --- CONNECT DATABASE ---
 require('./configs/database.config');
 
 // --- GENERAL MIDDLEWARES ---
@@ -26,12 +29,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/auth/signup', (req, res, next) => {
-  res.status(200).json({ message: 'ok' });
-});
-app.use('/api/auth/login', (req, res, next) => {
-  res.status(200).json({ message: 'ok' });
-});
+// --- USE API ROUTERS ---
+app.use('/api', routing);
 
 // --- EXPORTS ---
 module.exports = app;
