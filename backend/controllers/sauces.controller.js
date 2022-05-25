@@ -12,9 +12,9 @@ exports.getOneSauce = async (req, res, next) => {
 exports.sauceCreate = [
   // Upload image
   upload.single('image'),
+  // Create new sauce
   async (req, res, next) => {
-    console.log(req.file);
-    console.log(req.body);
+    const imageUrl = `${req.protocol}://${req.get('host')}/public/images/${req.file.filename}`;
     res.status(200).json({ message: 'Route ok !' });
   },
 ];
