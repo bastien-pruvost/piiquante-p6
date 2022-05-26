@@ -14,6 +14,6 @@ exports.ensureAuthenticated = async (req, res, next) => {
       throw new Error(`Le token ne correspond à aucun utilisateur`);
     }
   } catch (err) {
-    res.status(401).json({ error: new Error('Invalid request') });
+    res.status(401).json({ error: `Invalid request: ${err.stack}` });
   }
 };
