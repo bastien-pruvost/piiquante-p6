@@ -1,4 +1,5 @@
 const userQueries = require('../queries/users.queries');
+const saucesQueries = require('../queries/sauces.queries');
 const { verifyToken } = require('../configs/jwt.config');
 
 exports.ensureAuthenticated = async (req, res, next) => {
@@ -14,6 +15,21 @@ exports.ensureAuthenticated = async (req, res, next) => {
       throw new Error(`Le token ne correspond à aucun utilisateur`);
     }
   } catch (err) {
-    res.status(401).json({ error: `Invalid request: ${err.stack}` });
+    res.status(401).json({ message: `Invalid request: ${err.message}` });
+  }
+};
+
+exports.ensureUserIsOwner = async (req, res, next) => {
+  try {
+    const sauceId = req.params.id;
+    const sauceObject = await saucesQueries.findSauceById(sauceId);
+    const userId = req.user._id.toString();
+    if (userId === sauceObject.userId) {
+      next();
+    } else {
+      res.status(403).json({ message: `Vous n'êtes pas l'auteur de cette sauce` });
+    }
+  } catch (err) {
+    res.status(403).json({ message: `Invalid request: ${err.message}` });
   }
 };
