@@ -12,7 +12,13 @@ exports.getAllSauces = async (req, res, next) => {
 };
 
 exports.getOneSauce = async (req, res, next) => {
-  res.status(200).json({ message: 'Route ok !' });
+  try {
+    const sauceId = req.params.id;
+    const sauce = await saucesQueries.findOneSauce(sauceId);
+    res.status(200).json(sauce);
+  } catch (err) {
+    res.status(404).json({ error: err.mesage });
+  }
 };
 
 exports.createSauce = [
