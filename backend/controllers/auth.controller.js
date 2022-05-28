@@ -7,7 +7,7 @@ exports.signup = async (req, res, next) => {
     await usersQueries.createUser(req.body);
     return res.status(201).json({ message: 'Utilisateur créé' });
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(400).json({ message: err.message });
   }
 };
 
