@@ -21,9 +21,9 @@ exports.ensureAuthenticated = async (req, res, next) => {
 
 exports.ensureUserIsOwner = async (req, res, next) => {
   try {
+    const userId = req.user._id.toString();
     const sauceId = req.params.id;
     const sauceObject = await saucesQueries.findSauceById(sauceId);
-    const userId = req.user._id.toString();
     if (userId === sauceObject.userId) {
       next();
     } else {
