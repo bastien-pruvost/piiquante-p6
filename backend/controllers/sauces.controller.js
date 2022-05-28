@@ -67,5 +67,25 @@ exports.deleteSauce = async (req, res, next) => {
 };
 
 exports.likeSauce = async (req, res, next) => {
-  res.status(200).json({ message: 'Route ok !' });
+  try {
+    const likeRequest = req.body.like;
+    const sauceId = req.params.id;
+    const userId = req.user._id.toString();
+    const sauceObject = await saucesQueries.findSauceById(sauceId);
+    const userAlreadyLiked = sauceObject.usersLiked.includes(userId);
+    const userAlreadyDisliked = sauceObject.usersDisliked.includes(userId);
+    const updatedSauceObject = JSON.parse(JSON.stringify(sauceObject));
+
+    if (likeRequest === 1 && !userAlreadyLiked) {
+      sauceObject.usersLiked.addToSet(userId);
+      sauceObject.usersDisliked.pull(userId);
+    }
+
+    console.log(updatedSauceObject);
+
+    // await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
+    res.status(200).json({ message: 'Requête términée' });
+  } catch (err) {
+    res.status(500).json({ error: err.mesage });
+  }
 };
