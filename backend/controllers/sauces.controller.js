@@ -76,12 +76,12 @@ exports.likeSauce = async (req, res, next) => {
     const userAlreadyDisliked = sauceObject.usersDisliked.includes(userId);
     const updatedSauceObject = JSON.parse(JSON.stringify(sauceObject));
 
-    if (likeRequest === 1 && !userAlreadyLiked) {
-      sauceObject.usersLiked.addToSet(userId);
-      sauceObject.usersDisliked.pull(userId);
-    }
+    // if (likeRequest === 1 && !userAlreadyLiked) {
+    //   sauceObject.usersLiked.addToSet(userId);
+    //   sauceObject.usersDisliked.pull(userId);
+    // }
 
-    console.log(updatedSauceObject);
+    // console.log(updatedSauceObject);
 
     // await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
     res.status(200).json({ message: 'Requête términée' });
