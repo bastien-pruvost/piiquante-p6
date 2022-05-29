@@ -68,24 +68,51 @@ exports.deleteSauce = async (req, res, next) => {
 
 exports.likeSauce = async (req, res, next) => {
   try {
-    const likeRequest = req.body.like;
+    const { body } = req;
+    const likeRequest = body.like;
     const sauceId = req.params.id;
     const userId = req.user._id.toString();
     const sauceObject = await saucesQueries.findSauceById(sauceId);
     const userAlreadyLiked = sauceObject.usersLiked.includes(userId);
     const userAlreadyDisliked = sauceObject.usersDisliked.includes(userId);
-    const updatedSauceObject = JSON.parse(JSON.stringify(sauceObject));
+    let updatedSauceObject = {};
+    let message = '';
 
-    // if (likeRequest === 1 && !userAlreadyLiked) {
-    //   sauceObject.usersLiked.addToSet(userId);
-    //   sauceObject.usersDisliked.pull(userId);
-    // }
-
-    // console.log(updatedSauceObject);
-
-    // await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
-    res.status(200).json({ message: 'Requête términée' });
+    if (likeRequest === 1 && !userAlreadyLiked) {
+      updatedSauceObject = {
+        $addToSet: { usersLiked: userId },
+        $pull: { usersDisliked: userId },
+        $inc: {
+          likes: 1,
+          dislikes: userAlreadyDisliked ? -1 : 0,
+        },
+      };
+      message = `Vous avez mis un like sur cette sauce`;
+    } else if (likeRequest === -1 && !userAlreadyDisliked) {
+      updatedSauceObject = {
+        $addToSet: { usersDisliked: userId },
+        $pull: { usersLiked: userId },
+        $inc: {
+          dislikes: 1,
+          likes: userAlreadyLiked ? -1 : 0,
+        },
+      };
+      message = `Vous avez mis un dislike sur cette sauce`;
+    } else if (likeRequest === 0) {
+      updatedSauceObject = {
+        $pull: { usersLiked: userId, usersDisliked: userId },
+        $inc: {
+          likes: userAlreadyLiked ? -1 : 0,
+          dislikes: userAlreadyDisliked ? -1 : 0,
+        },
+      };
+      message = `Vous avez enlevé votre ${userAlreadyLiked ? 'like' : 'dislike'} sur cette sauce`;
+    } else {
+      return res.status(400).json({ message: `Vous avez déja ${userAlreadyLiked ? 'liké' : 'disliké'} cette sauce` });
+    }
+    await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
+    return res.status(200).json({ message });
   } catch (err) {
-    res.status(500).json({ error: err.mesage });
+    res.status(500).json({ message: err.mesage });
   }
 };
