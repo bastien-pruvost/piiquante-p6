@@ -4,7 +4,6 @@ const { verifyToken } = require('../configs/jwt.config');
 
 exports.ensureAuthenticated = async (req, res, next) => {
   try {
-    console.log('ici');
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = verifyToken(token);
     const user = await userQueries.findUserById(decodedToken.userId);

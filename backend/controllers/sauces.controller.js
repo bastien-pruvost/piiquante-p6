@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { upload } = require('../configs/multer.config');
 const saucesQueries = require('../queries/sauces.queries');
 
@@ -42,12 +43,18 @@ exports.modifySauce = [
   async (req, res, next) => {
     try {
       const sauceId = req.params.id;
-      const updatedSauceObject = req.file
-        ? {
-            ...JSON.parse(req.body.sauce),
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-          }
-        : { ...req.body };
+      let updatedSauceObject = {};
+      if (req.file) {
+        const sauce = await saucesQueries.findSauceById(sauceId);
+        const filename = sauce.imageUrl.split('/images/')[1];
+        fs.unlinkSync(`public/images/${filename}`);
+        updatedSauceObject = {
+          ...JSON.parse(req.body.sauce),
+          imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        };
+      } else {
+        updatedSauceObject = { ...req.body };
+      }
       await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
       res.status(200).json({ message: 'Sauce modifiée avec succés' });
     } catch (err) {
@@ -59,6 +66,9 @@ exports.modifySauce = [
 exports.deleteSauce = async (req, res, next) => {
   try {
     const sauceId = req.params.id;
+    const sauce = await saucesQueries.findSauceById(sauceId);
+    const filename = sauce.imageUrl.split('/images/')[1];
+    fs.unlinkSync(`public/images/${filename}`);
     await saucesQueries.deleteSauceById(sauceId);
     res.status(200).json({ message: 'Sauce supprimée avec succés' });
   } catch (err) {
@@ -87,7 +97,7 @@ exports.likeSauce = async (req, res, next) => {
           dislikes: userAlreadyDisliked ? -1 : 0,
         },
       };
-      message = `Vous avez mis un like sur cette sauce`;
+      message = `Vous avez liké la sauce ${sauceObject.name}`;
     } else if (likeRequest === -1 && !userAlreadyDisliked) {
       updatedSauceObject = {
         $addToSet: { usersDisliked: userId },
@@ -97,7 +107,7 @@ exports.likeSauce = async (req, res, next) => {
           likes: userAlreadyLiked ? -1 : 0,
         },
       };
-      message = `Vous avez mis un dislike sur cette sauce`;
+      message = `Vous avez disliké la sauce ${sauceObject.name}`;
     } else if (likeRequest === 0) {
       updatedSauceObject = {
         $pull: { usersLiked: userId, usersDisliked: userId },
@@ -106,12 +116,14 @@ exports.likeSauce = async (req, res, next) => {
           dislikes: userAlreadyDisliked ? -1 : 0,
         },
       };
-      message = `Vous avez enlevé votre ${userAlreadyLiked ? 'like' : 'dislike'} sur cette sauce`;
+      message = `Vous avez enlevé votre ${userAlreadyLiked ? 'like' : 'dislike'} de la sauce ${sauceObject.name}`;
     } else {
-      return res.status(400).json({ message: `Vous avez déja ${userAlreadyLiked ? 'liké' : 'disliké'} cette sauce` });
+      res
+        .status(400)
+        .json({ message: `Vous avez déja ${userAlreadyLiked ? 'liké' : 'disliké'} la sauce ${sauceObject.name}` });
     }
     await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
-    return res.status(200).json({ message });
+    res.status(200).json({ message });
   } catch (err) {
     res.status(500).json({ message: err.mesage });
   }
