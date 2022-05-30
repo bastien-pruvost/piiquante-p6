@@ -19,6 +19,6 @@ exports.uploadSingleImage = (req, res, next) => {
     if (err) {
       return res.status(400).json({ error: err });
     }
-    next();
+    return next();
   });
 };
