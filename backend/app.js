@@ -15,7 +15,7 @@ require('./configs/database.config');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('short'));
+app.use(morgan(':date - :method   :url - :status - :referrer - :response-time[3]'));
 
 // --- SET HEADERS ---
 app.use((req, res, next) => {
