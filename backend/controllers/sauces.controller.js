@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { upload } = require('../configs/multer.config');
 const saucesQueries = require('../queries/sauces.queries');
 
 exports.getAllSauces = async (req, res, next) => {
@@ -21,48 +20,47 @@ exports.getOneSauce = async (req, res, next) => {
   }
 };
 
-exports.createSauce = [
-  upload.single('image'), // Upload image before creating the sauce
-  async (req, res, next) => {
-    try {
-      const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-      const sauceObject = {
-        ...JSON.parse(req.body.sauce),
-        imageUrl,
-      };
-      await saucesQueries.addSauce(sauceObject);
-      res.status(201).json({ message: 'Sauce ajoutée avec succés.' });
-    } catch (err) {
-      console.log(err);
-      res.status(400).json({ message: err.message });
-    }
-  },
-];
+exports.createSauce = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+    const sauceObject = {
+      ...JSON.parse(req.body.sauce),
+      imageUrl,
+      userId: req.user._id,
+    };
+    await saucesQueries.addSauce(sauceObject);
+    res.status(201).json({ message: 'Sauce ajoutée avec succés.' });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err.message });
+  }
+};
 
-exports.modifySauce = [
-  upload.single('image'), // Upload image before creating the sauce
-  async (req, res, next) => {
-    try {
-      const sauceId = req.params.id;
-      let updatedSauceObject = {};
-      if (req.file) {
-        const sauce = await saucesQueries.findSauceById(sauceId);
-        const filename = sauce.imageUrl.split('/images/')[1];
-        fs.unlinkSync(`public/images/${filename}`);
-        updatedSauceObject = {
-          ...JSON.parse(req.body.sauce),
-          imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        };
-      } else {
-        updatedSauceObject = { ...req.body };
-      }
-      await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
-      res.status(200).json({ message: 'Sauce modifiée avec succés' });
-    } catch (err) {
-      res.status(400).json({ message: err.message });
+exports.modifySauce = async (req, res, next) => {
+  try {
+    const sauceId = req.params.id;
+    let updatedSauceObject = {};
+
+    if (req.file) {
+      const sauce = await saucesQueries.findSauceById(sauceId);
+      const filename = sauce.imageUrl.split('/images/')[1];
+      fs.unlinkSync(`public/images/${filename}`);
+      updatedSauceObject = {
+        ...JSON.parse(req.body.sauce),
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        userId: req.user._id,
+      };
+    } else {
+      updatedSauceObject = { ...req.body };
     }
-  },
-];
+
+    await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
+    res.status(200).json({ message: 'Sauce modifiée avec succés' });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
 
 exports.deleteSauce = async (req, res, next) => {
   try {

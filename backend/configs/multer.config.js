@@ -14,4 +14,11 @@ const storage = multer.diskStorage({
   },
 });
 
-exports.upload = multer({ storage });
+exports.uploadSingleImage = (req, res, next) => {
+  multer({ storage }).single('image')(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    }
+    next();
+  });
+};
