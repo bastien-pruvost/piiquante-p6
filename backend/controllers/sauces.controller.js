@@ -7,7 +7,7 @@ exports.getAllSauces = async (req, res, next) => {
     const allSauces = await saucesQueries.findAllSauces();
     res.status(200).json(allSauces);
   } catch (err) {
-    res.status(404).json({ message: err.mesage });
+    res.status(404).json({ message: err.message });
   }
 };
 
@@ -17,7 +17,7 @@ exports.getOneSauce = async (req, res, next) => {
     const sauceObject = await saucesQueries.findSauceById(sauceId);
     res.status(200).json(sauceObject);
   } catch (err) {
-    res.status(404).json({ message: err.mesage });
+    res.status(404).json({ message: err.message });
   }
 };
 
@@ -33,7 +33,8 @@ exports.createSauce = [
       await saucesQueries.addSauce(sauceObject);
       res.status(201).json({ message: 'Sauce ajoutée avec succés.' });
     } catch (err) {
-      res.status(400).json({ message: err.mesage });
+      console.log(err);
+      res.status(400).json({ message: err.message });
     }
   },
 ];
@@ -72,7 +73,7 @@ exports.deleteSauce = async (req, res, next) => {
     await saucesQueries.deleteSauceById(sauceId);
     res.status(200).json({ message: 'Sauce supprimée avec succés' });
   } catch (err) {
-    res.status(400).json({ error: err.mesage });
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -125,6 +126,6 @@ exports.likeSauce = async (req, res, next) => {
     await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
     res.status(200).json({ message });
   } catch (err) {
-    res.status(500).json({ message: err.mesage });
+    res.status(500).json({ message: err.message });
   }
 };
