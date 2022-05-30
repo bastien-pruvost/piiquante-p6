@@ -1,8 +1,9 @@
 const express = require('express');
 const helmet = require('helmet');
-const morgan = require('morgan');
 const path = require('path');
+const fs = require('fs');
 const routing = require('./routes');
+const { logs } = require('./configs/logs.config');
 
 const app = express();
 
@@ -15,7 +16,7 @@ require('./configs/database.config');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan(':date - :method   :url - :status - :referrer - :response-time[3]'));
+app.use(logs);
 
 // --- SET HEADERS ---
 app.use((req, res, next) => {
