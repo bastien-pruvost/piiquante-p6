@@ -1,9 +1,12 @@
 const express = require('express');
+const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 const routing = require('./routes');
 
 const app = express();
+
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'same-site' } }));
 
 // --- CONNECT DATABASE ---
 require('./configs/database.config');
