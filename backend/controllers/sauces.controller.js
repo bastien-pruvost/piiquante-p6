@@ -22,7 +22,6 @@ exports.getOneSauce = async (req, res, next) => {
 
 exports.createSauce = async (req, res, next) => {
   try {
-    console.log(req.body);
     const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
     const sauceObject = {
       ...JSON.parse(req.body.sauce),
@@ -32,7 +31,6 @@ exports.createSauce = async (req, res, next) => {
     await saucesQueries.addSauce(sauceObject);
     res.status(201).json({ message: 'Sauce ajoutée avec succés.' });
   } catch (err) {
-    console.log(err);
     res.status(400).json({ message: err.message });
   }
 };
