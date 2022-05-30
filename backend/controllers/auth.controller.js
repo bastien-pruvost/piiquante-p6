@@ -1,5 +1,5 @@
 const usersQueries = require('../queries/users.queries');
-const argon2 = require('../configs/argon2.config');
+const argon = require('../configs/argon2.config');
 const { createToken } = require('../configs/jwt.config');
 
 exports.signup = async (req, res, next) => {
@@ -17,7 +17,7 @@ exports.login = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: 'Utilisateur non trouvé' });
     }
-    const passwordIsValid = await argon2.verifyPassword(req.body.password, user.password);
+    const passwordIsValid = await argon.verifyPassword(req.body.password, user.password);
     if (!passwordIsValid) {
       return res.status(401).json({ message: 'Mot de passe incorrect' });
     }
