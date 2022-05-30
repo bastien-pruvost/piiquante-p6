@@ -1,7 +1,7 @@
 const fs = require('fs');
 const saucesQueries = require('../queries/sauces.queries');
 
-exports.getAllSauces = async (req, res, next) => {
+exports.getAllSauces = async (req, res) => {
   try {
     const allSauces = await saucesQueries.findAllSauces();
     res.status(200).json(allSauces);
@@ -10,7 +10,7 @@ exports.getAllSauces = async (req, res, next) => {
   }
 };
 
-exports.getOneSauce = async (req, res, next) => {
+exports.getOneSauce = async (req, res) => {
   try {
     const sauceId = req.params.id;
     const sauceObject = await saucesQueries.findSauceById(sauceId);
@@ -20,7 +20,7 @@ exports.getOneSauce = async (req, res, next) => {
   }
 };
 
-exports.createSauce = async (req, res, next) => {
+exports.createSauce = async (req, res) => {
   try {
     const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
     const sauceObject = {
@@ -35,7 +35,7 @@ exports.createSauce = async (req, res, next) => {
   }
 };
 
-exports.modifySauce = async (req, res, next) => {
+exports.modifySauce = async (req, res) => {
   try {
     const sauceId = req.params.id;
     let updatedSauceObject = {};
@@ -60,7 +60,7 @@ exports.modifySauce = async (req, res, next) => {
   }
 };
 
-exports.deleteSauce = async (req, res, next) => {
+exports.deleteSauce = async (req, res) => {
   try {
     const sauceId = req.params.id;
     const sauce = await saucesQueries.findSauceById(sauceId);
@@ -73,7 +73,7 @@ exports.deleteSauce = async (req, res, next) => {
   }
 };
 
-exports.likeSauce = async (req, res, next) => {
+exports.likeSauce = async (req, res) => {
   try {
     const { body } = req;
     const likeRequest = body.like;

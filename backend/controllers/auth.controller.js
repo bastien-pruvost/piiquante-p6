@@ -2,7 +2,7 @@ const usersQueries = require('../queries/users.queries');
 const argon = require('../configs/argon2.config');
 const { createToken } = require('../configs/jwt.config');
 
-exports.signup = async (req, res, next) => {
+exports.signup = async (req, res) => {
   try {
     await usersQueries.createUser(req.body);
     return res.status(201).json({ message: 'Utilisateur créé' });
@@ -11,7 +11,7 @@ exports.signup = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
   try {
     const user = await usersQueries.findUserByEmail(req.body.email);
     if (!user) {
