@@ -50,7 +50,7 @@ exports.modifySauce = async (req, res, next) => {
         userId: req.user._id,
       };
     } else {
-      updatedSauceObject = { ...req.body };
+      updatedSauceObject = { ...req.body, userId: req.user._id };
     }
 
     await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
