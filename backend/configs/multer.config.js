@@ -1,8 +1,10 @@
 const multer = require('multer');
 const path = require('path');
 
+// Function to create a random integer in a range of two numbers (for images filename)
 const getRandomBetween = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
+// Configure file name and destination folder for file storage with multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'public/images');
@@ -14,6 +16,7 @@ const storage = multer.diskStorage({
   },
 });
 
+// Middleware to store a single image
 exports.uploadSingleImage = (req, res, next) => {
   multer({ storage }).single('image')(req, res, (err) => {
     if (err) {

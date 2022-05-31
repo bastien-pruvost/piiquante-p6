@@ -2,6 +2,7 @@ const userQueries = require('../queries/users.queries');
 const saucesQueries = require('../queries/sauces.queries');
 const { verifyToken } = require('../configs/jwt.config');
 
+// Middleware to ensure that the user is properly connected and add the user to the request object if he is connected
 exports.ensureAuthenticated = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
@@ -19,6 +20,7 @@ exports.ensureAuthenticated = async (req, res, next) => {
   }
 };
 
+// Middleware to ensure that the user is the owner of the sauce he tries to modify or delete
 exports.ensureUserIsOwner = async (req, res, next) => {
   try {
     const userId = req.user._id.toString();

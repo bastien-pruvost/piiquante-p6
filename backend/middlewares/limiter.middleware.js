@@ -1,16 +1,17 @@
 const { RateLimiter } = require('limiter');
 
-const limiter = new RateLimiter({
+// Initialize the request limiter to 2 requests every 2 seconds
+const loginRateLimiter = new RateLimiter({
   tokensPerInterval: 2,
-  interval: 2000,
+  interval: 10000,
   fireImmediately: true,
 });
 
-exports.rateLimiter = async (req, res, next) => {
-  // Immediately send 429 header to client when rate limiting is in effect
-  const remainingRequests = await limiter.removeTokens(1);
+// Middleware to send an error when the user exceeds the number of login requests
+exports.loginLimiter = async (req, res, next) => {
+  const remainingRequests = await loginRateLimiter.removeTokens(1);
   if (remainingRequests < 0) {
-    res.status(429).json({ message: 'Vous avez dépassé la limite de requêtes' });
+    res.status(429).json({ message: 'Veuillez attendre quelques secondes avant de réessayer' });
   } else {
     next();
   }

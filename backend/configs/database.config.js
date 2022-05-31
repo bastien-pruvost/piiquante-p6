@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Connect app to the MongoDB database with mongoose
 exports.clientP = mongoose
   .connect(
     `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@hottakes.zv7se.mongodb.net/HotTakesData?retryWrites=true&w=majority`,

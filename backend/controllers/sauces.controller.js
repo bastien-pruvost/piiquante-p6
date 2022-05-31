@@ -1,6 +1,7 @@
 const fs = require('fs');
 const saucesQueries = require('../queries/sauces.queries');
 
+// Controller to retrieve all the sauces and send them in json
 exports.getAllSauces = async (req, res) => {
   try {
     const allSauces = await saucesQueries.findAllSauces();
@@ -10,6 +11,7 @@ exports.getAllSauces = async (req, res) => {
   }
 };
 
+// Controller to retrieve one sauce and send it in json
 exports.getOneSauce = async (req, res) => {
   try {
     const sauceId = req.params.id;
@@ -20,6 +22,7 @@ exports.getOneSauce = async (req, res) => {
   }
 };
 
+// Controller to create a new sauce
 exports.createSauce = async (req, res) => {
   try {
     const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
@@ -35,11 +38,13 @@ exports.createSauce = async (req, res) => {
   }
 };
 
+// Controller to modify an existing sauce
 exports.modifySauce = async (req, res) => {
   try {
     const sauceId = req.params.id;
     let updatedSauceObject = {};
 
+    // Changes the updated sauce object depending on whether there is an image or not
     if (req.file) {
       const sauce = await saucesQueries.findSauceById(sauceId);
       const filename = sauce.imageUrl.split('/images/')[1];
@@ -60,6 +65,7 @@ exports.modifySauce = async (req, res) => {
   }
 };
 
+// Controller to delete an existing sauce
 exports.deleteSauce = async (req, res) => {
   try {
     const sauceId = req.params.id;
@@ -69,10 +75,11 @@ exports.deleteSauce = async (req, res) => {
     await saucesQueries.deleteSauceById(sauceId);
     res.status(200).json({ message: 'Sauce supprimée avec succés' });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 
+// Controller to like or dislike a sauce (and verify if the user has not already liked or disliked)
 exports.likeSauce = async (req, res) => {
   try {
     const { body } = req;
@@ -85,6 +92,7 @@ exports.likeSauce = async (req, res) => {
     let updatedSauceObject = {};
     let message = '';
 
+    // Add a like
     if (likeRequest === 1 && !userAlreadyLiked) {
       updatedSauceObject = {
         $addToSet: { usersLiked: userId },
@@ -95,6 +103,8 @@ exports.likeSauce = async (req, res) => {
         },
       };
       message = `Vous avez liké la sauce ${sauceObject.name}`;
+
+      // Add a dislike
     } else if (likeRequest === -1 && !userAlreadyDisliked) {
       updatedSauceObject = {
         $addToSet: { usersDisliked: userId },
@@ -105,6 +115,8 @@ exports.likeSauce = async (req, res) => {
         },
       };
       message = `Vous avez disliké la sauce ${sauceObject.name}`;
+
+      // Remove the like or dislike
     } else if (likeRequest === 0) {
       updatedSauceObject = {
         $pull: { usersLiked: userId, usersDisliked: userId },
@@ -114,6 +126,8 @@ exports.likeSauce = async (req, res) => {
         },
       };
       message = `Vous avez enlevé votre ${userAlreadyLiked ? 'like' : 'dislike'} de la sauce ${sauceObject.name}`;
+
+      // Returns an error if the user has already liked or disliked this sauce
     } else {
       res
         .status(400)

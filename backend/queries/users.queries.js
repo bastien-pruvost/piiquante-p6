@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const argon = require('../configs/argon2.config');
 
+// Database query to save a new user
 exports.createUser = async (user) => {
   try {
     const hashedPassword = await argon.hashPassword(user.password);
@@ -14,6 +15,7 @@ exports.createUser = async (user) => {
   }
 };
 
+// Database query to find a user with his email
 exports.findUserByEmail = async (email) => {
   try {
     return User.findOne({ email }).exec();
@@ -22,6 +24,7 @@ exports.findUserByEmail = async (email) => {
   }
 };
 
+// Database query to find a user with his id
 exports.findUserById = async (id) => {
   try {
     return User.findOne({ _id: id }).exec();

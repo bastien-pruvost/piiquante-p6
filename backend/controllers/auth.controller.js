@@ -2,6 +2,7 @@ const usersQueries = require('../queries/users.queries');
 const argon = require('../configs/argon2.config');
 const { createToken } = require('../configs/jwt.config');
 
+// Controller to create a new user
 exports.signup = async (req, res) => {
   try {
     await usersQueries.createUser(req.body);
@@ -11,6 +12,7 @@ exports.signup = async (req, res) => {
   }
 };
 
+// Controller to connect a user by creating a token
 exports.login = async (req, res) => {
   try {
     const user = await usersQueries.findUserByEmail(req.body.email);

@@ -1,10 +1,7 @@
-const http = require('http');
+const https = require('https');
 const app = require('./app');
 
-// --- SETUP NODE_ENV ---
-process.env.NODE_ENV = 'development';
-
-// --- NORMALIZE PORT ---
+// Normalize server port
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
 
@@ -19,16 +16,16 @@ const normalizePort = (val) => {
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-// --- INITIALIZE SERVER WITH EXPRESS APP ---
-const server = http.createServer(app);
+// Initialize the server with the express app
+const server = https.createServer(app);
 
-// --- ERROR HANDLER ---
+// Error handler
 const errorHandler = (error) => {
   if (error.syscall !== 'listen') {
     throw error;
   }
   const address = server.address();
-  const bind = typeof address === 'string' ? `pipe ${address}` : `port: ${port}`;
+  const bind = typeof address === 'string' ? `pipe ${address}` : `port ${port}`;
   switch (error.code) {
     case 'EACCES':
       console.error(`${bind} requires elevated privileges.`);
@@ -44,12 +41,12 @@ const errorHandler = (error) => {
 };
 server.on('error', errorHandler);
 
-// --- CONSOLE LOG ON SERVER LISTENING ---
+// Console log when server is listening
 server.on('listening', () => {
   const address = server.address();
   const bind = typeof address === 'string' ? `pipe ${address}` : `port: ${port}`;
   console.log(`Listening on  ${bind}`);
 });
 
-// --- LISTENING ---
+// Listen on the specified port
 server.listen(port);

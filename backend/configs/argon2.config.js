@@ -1,5 +1,6 @@
 const argon2 = require('argon2');
 
+// Function to hash a password
 exports.hashPassword = async (password) => {
   try {
     return await argon2.hash(password, {
@@ -11,6 +12,7 @@ exports.hashPassword = async (password) => {
   }
 };
 
+// Function to compare a hashed password with a plaintext password
 exports.verifyPassword = async (password, encryptedPassword) => {
   try {
     return await argon2.verify(encryptedPassword, password);
