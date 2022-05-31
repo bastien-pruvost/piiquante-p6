@@ -1,4 +1,4 @@
-const https = require('https');
+const http = require('http');
 const app = require('./app');
 
 // Normalize server port
@@ -17,7 +17,7 @@ const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 // Initialize the server with the express app
-const server = https.createServer(app);
+const server = http.createServer(app);
 
 // Error handler
 const errorHandler = (error) => {
