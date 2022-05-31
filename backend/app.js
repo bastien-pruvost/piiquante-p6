@@ -5,20 +5,24 @@ const fs = require('fs');
 const routing = require('./routes');
 const { logs } = require('./configs/logs.config');
 
+// Initialize express in app const
 const app = express();
 
+// Use helmet for all request (Add some recommended security headers)
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'same-site' } }));
 
-// --- CONNECT DATABASE ---
+// Connect to database with the database config file
 require('./configs/database.config');
 
-// --- GENERAL MIDDLEWARES ---
+// General middlewares
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Use logs for all requests
 app.use(logs);
 
-// --- SET HEADERS ---
+// Set headers for all requests
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
@@ -29,8 +33,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// --- USE API ROUTERS ---
+// Use router for '/api' route
 app.use('/api', routing);
 
-// --- EXPORTS ---
+// Export the app for 'server.js' file
 module.exports = app;
