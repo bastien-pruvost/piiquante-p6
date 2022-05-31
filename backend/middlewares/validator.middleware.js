@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { body, check, validationResult } = require('express-validator');
 
 const checkValidationErrors = (req, res, next) => {
@@ -20,9 +21,13 @@ exports.signupValidator = [
   },
 ];
 
-exports.newSauceValidator = (req, res, next) => {
-  if (!(req.file && req.file.fieldname === 'image')) {
-    return res.status(400).json({ message: 'Vous devez fournir une image pour la sauce' });
+exports.sauceValidator = (req, res, next) => {
+  if (req.file && !req.body.sauce) {
+    fs.unlinkSync(`public/images/${req.file.filename}`);
+    return res.status(400).json({ message: `Il manque l'objet sauce dans la requête` });
+  }
+  if (req.body.sauce && !req.file) {
+    return res.status(400).json({ message: `Il manque l'image dans la requête` });
   }
   return next();
 };
