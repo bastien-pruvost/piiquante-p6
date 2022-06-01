@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { body, check, validationResult } = require('express-validator');
+const { body, validationResult } = require('express-validator');
 
 // Manages errors from different validators to return them to the user
 const checkValidationErrors = (req, res, next) => {
@@ -17,7 +17,9 @@ const checkValidationErrors = (req, res, next) => {
 // Check the format of inputs in the signup form
 exports.signupValidator = [
   body('email').isEmail().withMessage(`L'adresse email n'est pas au bon format`),
-  body('password').isLength({ min: 5 }).withMessage('Le mot de passe doit contenir au minimum 5 charactères'),
+  body('password')
+    .isStrongPassword({ minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 })
+    .withMessage('Le mot de passe doit contenir au minimum 8 charactères, une majuscule, une minuscule et un chiffre'),
   (req, res, next) => {
     checkValidationErrors(req, res, next);
   },
@@ -31,6 +33,18 @@ exports.sauceValidator = (req, res, next) => {
   }
   if (req.body.sauce && !req.file) {
     return res.status(400).json({ message: `Il manque l'image dans la requête` });
+  }
+  if (
+    req.file &&
+    req.file.mimetype !== 'image/png' &&
+    req.file.mimetype !== 'image/jpg' &&
+    req.file.mimetype !== 'image/jpeg'
+  ) {
+    console.log(req.file.mimetype);
+    return res.status(400).json({ message: `L'image n'est pas au bon format (Formats supportés : jpeg/jpg/png)` });
+  }
+  if (req.file && req.file.size > 2097152) {
+    return res.status(400).json({ message: `L'image est trop lourde veuillez ne pas depasser 2Mo` });
   }
   return next();
 };
