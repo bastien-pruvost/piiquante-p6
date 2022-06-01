@@ -1,7 +1,7 @@
 const http = require('http');
 const app = require('./app');
 
-// Normalize server port
+// Normalize server port (ensure that port is an integer number)
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
   if (Number.isNaN(port)) {
@@ -12,8 +12,7 @@ const normalizePort = (val) => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+const port = normalizePort(process.env.PORT || 3000);
 
 // Initialize the server with the express app
 const server = http.createServer(app);
