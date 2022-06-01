@@ -5,7 +5,8 @@ exports.hashPassword = async (password) => {
   try {
     return await argon2.hash(password, {
       type: argon2.argon2id,
-      memoryCost: 16384,
+      memoryCost: 17408,
+      timeCost: 3,
     });
   } catch (err) {
     throw new Error(`Erreur d'encryptage' : ${err}`);
