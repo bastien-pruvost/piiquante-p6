@@ -12,7 +12,7 @@ const normalizePort = (val) => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || 3000);
+const port = normalizePort(process.env.SERVER_PORT || 3000);
 
 // Initialize the server with the express app
 const server = http.createServer(app);
