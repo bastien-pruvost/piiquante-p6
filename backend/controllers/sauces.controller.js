@@ -82,8 +82,7 @@ exports.deleteSauce = async (req, res) => {
 // Controller to like or dislike a sauce (and verify if the user has not already liked or disliked)
 exports.likeSauce = async (req, res) => {
   try {
-    const { body } = req;
-    const likeRequest = body.like;
+    const likeRequest = req.body.like;
     const sauceId = req.params.id;
     const userId = req.user._id.toString();
     const sauceObject = await saucesQueries.findSauceById(sauceId);

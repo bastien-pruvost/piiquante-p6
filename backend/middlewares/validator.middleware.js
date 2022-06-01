@@ -7,7 +7,7 @@ const checkValidationErrors = (req, res, next) => {
   if (!errors.isEmpty()) {
     let errorMsg = '';
     errors.errors.forEach((error) => {
-      errorMsg += `${error.msg}, `;
+      errorMsg += `${error.msg}.   `;
     });
     return res.status(400).json({ message: errorMsg });
   }
