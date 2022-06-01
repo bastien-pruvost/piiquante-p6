@@ -17,11 +17,9 @@ const storage = multer.diskStorage({
 });
 
 // Middleware to store a single image
-exports.uploadSingleImage = (req, res, next) => {
+exports.uploadSauceImage = (req, res, next) => {
   multer({ storage }).single('image')(req, res, (err) => {
-    if (err) {
-      return res.status(400).json({ error: err });
-    }
+    if (err) return res.status(400).json({ message: err });
     return next();
   });
 };
