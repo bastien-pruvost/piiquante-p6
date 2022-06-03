@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const { uploadSauceImage } = require('../configs/multer.config');
 const { ensureAuthenticated, ensureUserIsOwner } = require('../middlewares/security.middleware');
+const { uploadSauceImage } = require('../configs/multer.config');
 const { sauceValidator } = require('../middlewares/validator.middleware');
 const saucesCtrl = require('../controllers/sauces.controller');
 

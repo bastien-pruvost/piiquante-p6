@@ -1,17 +1,14 @@
 const express = require('express');
-const helmet = require('helmet');
 const path = require('path');
-const routing = require('./routes');
+const helmet = require('helmet');
 const { logs } = require('./configs/logs.config');
+const routing = require('./routes');
 
 // Initialize express in app const
 const app = express();
 
 // Connect to database with the database config file
 require('./configs/database.config');
-
-// Use logs for all requests
-app.use(logs);
 
 // Set headers for all requests
 app.use((req, res, next) => {
@@ -26,6 +23,9 @@ app.use((req, res, next) => {
 
 // Use helmet middleware for all request (Add some recommended security headers)
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'same-site' } }));
+
+// Use logs for all requests
+app.use(logs);
 
 // General middlewares
 app.use(express.static(path.join(__dirname, 'public')));
