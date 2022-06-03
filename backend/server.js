@@ -1,6 +1,9 @@
 const http = require('http');
 const app = require('./app');
 
+// Initialize the server with the express app
+const server = http.createServer(app);
+
 // Normalize server port (ensure that port is an integer number)
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
@@ -13,9 +16,6 @@ const normalizePort = (val) => {
   return false;
 };
 const port = normalizePort(process.env.SERVER_PORT || 3000);
-
-// Initialize the server with the express app
-const server = http.createServer(app);
 
 // Error handler
 const errorHandler = (error) => {
