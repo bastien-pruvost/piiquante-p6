@@ -7,7 +7,7 @@ exports.getAllSauces = async (req, res) => {
     const allSauces = await saucesQueries.findAllSauces();
     res.status(200).json(allSauces);
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -16,9 +16,10 @@ exports.getOneSauce = async (req, res) => {
   try {
     const sauceId = req.params.id;
     const sauceObject = await saucesQueries.findSauceById(sauceId);
-    res.status(200).json(sauceObject);
+    if (sauceObject) res.status(200).json(sauceObject);
+    else res.status(404).json({ message: `Cette sauce n'existe pas` });
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -34,7 +35,7 @@ exports.createSauce = async (req, res) => {
     await saucesQueries.addSauce(sauceObject);
     res.status(201).json({ message: 'Sauce ajoutée avec succés.' });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -48,20 +49,18 @@ exports.modifySauce = async (req, res) => {
     if (req.file) {
       const sauce = await saucesQueries.findSauceById(sauceId);
       const filename = sauce.imageUrl.split('/images/')[1];
-      fs.unlinkSync(`public/images/${filename}`);
+      fs.unlink(`public/images/${filename}`, (err) => console.log(err));
       updatedSauceObject = {
         ...JSON.parse(req.body.sauce),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         userId: req.user._id,
       };
-    } else {
-      updatedSauceObject = { ...req.body, userId: req.user._id };
-    }
+    } else updatedSauceObject = { ...req.body, userId: req.user._id };
 
     await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
     res.status(200).json({ message: 'Sauce modifiée avec succés' });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -71,11 +70,11 @@ exports.deleteSauce = async (req, res) => {
     const sauceId = req.params.id;
     const sauce = await saucesQueries.findSauceById(sauceId);
     const filename = sauce.imageUrl.split('/images/')[1];
-    fs.unlinkSync(`public/images/${filename}`);
+    fs.unlink(`public/images/${filename}`, (err) => console.log(err));
     await saucesQueries.deleteSauceById(sauceId);
     res.status(200).json({ message: 'Sauce supprimée avec succés' });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
