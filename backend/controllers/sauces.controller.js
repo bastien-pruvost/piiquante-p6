@@ -90,6 +90,9 @@ exports.likeSauce = async (req, res) => {
     let updatedSauceObject = {};
     let message = '';
 
+    if (likeRequest < -1 || likeRequest > 1)
+      return res.status(400).json({ message: `Requète invalide. La valeur de like doit se situer entre -1 et 1` });
+
     // Add a like
     if (likeRequest === 1 && !userAlreadyLiked) {
       updatedSauceObject = {
@@ -127,13 +130,13 @@ exports.likeSauce = async (req, res) => {
 
       // Returns an error if the user has already liked or disliked this sauce
     } else {
-      res
+      return res
         .status(400)
         .json({ message: `Vous avez déja ${userAlreadyLiked ? 'liké' : 'disliké'} la sauce ${sauceObject.name}` });
     }
     await saucesQueries.updateSauceById(sauceId, updatedSauceObject);
-    res.status(200).json({ message });
+    return res.status(200).json({ message });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
