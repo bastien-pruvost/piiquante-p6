@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 // Use helmet middleware for all request (Add some recommended security headers)
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'same-site' } }));
 
 // Use logs for all requests
 app.use(logs);
