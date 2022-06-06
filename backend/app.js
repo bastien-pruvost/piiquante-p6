@@ -17,12 +17,12 @@ app.use((req, res, next) => {
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
   );
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   next();
 });
 
 // Use helmet middleware for all request (Add some recommended security headers)
-app.use(helmet({ crossOriginResourcePolicy: { policy: 'same-site' } }));
+app.use(helmet());
 
 // Use logs for all requests
 app.use(logs);
