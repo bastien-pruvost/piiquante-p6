@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const helmet = require('helmet');
-const { logs } = require('./configs/logs.config');
+const { logsInFile, logsInConsole } = require('./middlewares/logs.middleware');
 const routing = require('./routes');
 
 // Initialize express in app const
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'same-site' } }));
 
 // Use logs for all requests
-app.use(logs);
+app.use(logsInFile, logsInConsole);
 
 // General middlewares
 app.use(express.static(path.join(__dirname, 'public')));

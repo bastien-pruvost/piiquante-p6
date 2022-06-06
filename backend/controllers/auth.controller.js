@@ -1,6 +1,6 @@
-const argon = require('../configs/argon2.config');
+const jwt = require('jsonwebtoken');
+const argon = require('../utils/argon2.utils');
 const usersQueries = require('../queries/users.queries');
-const { createToken } = require('../configs/jwt.config');
 
 // Controller to create a new user
 exports.signup = async (req, res) => {
@@ -22,7 +22,10 @@ exports.login = async (req, res) => {
     const passwordIsValid = await argon.verifyPassword(req.body.password, user.password);
     if (!passwordIsValid) return res.status(401).json({ message: `Email ou mot de passe incorrect` });
 
-    return res.status(200).json({ userId: user._id.toString(), token: createToken(user) });
+    return res.status(200).json({
+      userId: user._id.toString(),
+      token: jwt.sign({ userId: user._id.toString() }, process.env.JWT_SECRET_KEY, { expiresIn: '6h' }),
+    });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

@@ -1,9 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-
-// Function to create a random integer in a range of two numbers (for images filename)
-const getRandomBetween = (min, max) => Math.floor(Math.random() * (max - min) + min);
+const { getRandomBetween } = require('../utils');
 
 // Setup file name and destination folder
 const storage = multer.diskStorage({

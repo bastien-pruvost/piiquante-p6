@@ -1,4 +1,4 @@
-const { verifyToken } = require('../configs/jwt.config');
+const jwt = require('jsonwebtoken');
 const userQueries = require('../queries/users.queries');
 const saucesQueries = require('../queries/sauces.queries');
 
@@ -6,7 +6,7 @@ const saucesQueries = require('../queries/sauces.queries');
 exports.ensureAuthenticated = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = verifyToken(token);
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const user = await userQueries.findUserById(decodedToken.userId);
     if (!user) return res.status(401).json({ message: `Le token ne correspond à aucun utilisateur` });
     req.user = user;
