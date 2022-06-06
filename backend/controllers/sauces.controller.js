@@ -15,9 +15,9 @@ exports.getAllSauces = async (req, res) => {
 exports.getOneSauce = async (req, res) => {
   try {
     const sauceId = req.params.id;
-    const sauceObject = await saucesQueries.findSauceById(sauceId);
-    if (sauceObject) res.status(200).json(sauceObject);
-    else res.status(404).json({ message: `Cette sauce n'existe pas` });
+    const sauce = await saucesQueries.findSauceById(sauceId);
+    if (!sauce) return res.status(404).json({ message: `Cette sauce n'existe pas` });
+    return res.status(200).json(sauce);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
