@@ -10,7 +10,7 @@ const app = express();
 // Connect to database with the database config file
 require('./configs/database.config');
 
-// Set headers for all requests
+// Set headers for all responses
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
