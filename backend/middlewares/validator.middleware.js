@@ -30,7 +30,9 @@ exports.signupValidator = [
 // Checks that the request to create or modify a sauce is complete
 exports.sauceValidator = (req, res, next) => {
   if (req.file && !req.body.sauce) {
-    fs.unlink(`public/images/${req.file.filename}`, (err) => console.log(err));
+    fs.unlink(`public/images/${req.file.filename}`, (error) => {
+      if (error) console.log(error);
+    });
     return res.status(400).json({ message: `Il manque l'objet sauce dans la requête` });
   }
   if (req.body.sauce && !req.file) {

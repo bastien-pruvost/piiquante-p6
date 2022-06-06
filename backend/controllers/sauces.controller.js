@@ -49,7 +49,9 @@ exports.modifySauce = async (req, res) => {
     if (req.file) {
       const sauce = await saucesQueries.findSauceById(sauceId);
       const filename = sauce.imageUrl.split('/images/')[1];
-      fs.unlink(`public/images/${filename}`, (err) => console.log(err));
+      fs.unlink(`public/images/${filename}`, (error) => {
+        if (error) console.log(error);
+      });
       updatedSauceObject = {
         ...JSON.parse(req.body.sauce),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
@@ -70,7 +72,9 @@ exports.deleteSauce = async (req, res) => {
     const sauceId = req.params.id;
     const sauce = await saucesQueries.findSauceById(sauceId);
     const filename = sauce.imageUrl.split('/images/')[1];
-    fs.unlink(`public/images/${filename}`, (err) => console.log(err));
+    fs.unlink(`public/images/${filename}`, (error) => {
+      if (error) console.log(error);
+    });
     await saucesQueries.deleteSauceById(sauceId);
     res.status(200).json({ message: 'Sauce supprimée avec succés' });
   } catch (err) {

@@ -33,7 +33,9 @@ exports.uploadSauceImage = (req, res, next) => {
       return res.status(400).json({ message: `L'image est trop lourde veuillez ne pas depasser 2Mo` });
     }
     if (req.file && !acceptedMimetypes.includes(req.file.mimetype)) {
-      fs.unlink(`public/images/${req.file.filename}`, (error) => console.log(error));
+      fs.unlink(`public/images/${req.file.filename}`, (error) => {
+        if (error) console.log(error);
+      });
       return res.status(400).json({ message: `L'image n'est pas au bon format. Formats accéptés : Png, Jpg, Jpeg` });
     }
     if (err) return res.status(500).json({ message: err.message });
