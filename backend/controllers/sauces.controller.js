@@ -19,7 +19,7 @@ exports.getOneSauce = async (req, res) => {
     if (!sauce) return res.status(404).json({ message: `Cette sauce n'existe pas` });
     return res.status(200).json(sauce);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
