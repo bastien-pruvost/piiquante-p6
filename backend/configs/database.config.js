@@ -9,7 +9,7 @@ exports.clientP = mongoose
       useUnifiedTopology: true,
     }
   )
-  .then(() => console.log('Connexion a MongoDB réussie.'))
+  .then(() => console.log('Connexion à MongoDB réussie.'))
   .catch((err) => {
-    console.error(`Erreur de connexion a la base de données : ${err}`);
+    console.error(`Erreur de connexion à MongoDB : ${err}`);
   });
