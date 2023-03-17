@@ -1,46 +1,154 @@
-# Piiquante P6 - Openclassrooms
+<!-- prettier-ignore-start -->
+
+<!-- Rename all occurences with Cmd + D :
+
+HotTakes (Piiquante)
+piiquante-p6
+
+ -->
+
+# HotTakes (Piiquante)
+
+Sixth project of Openclassrooms Web Developer Bootcamp.
+
 
 ## About the project
 
-This project consists of developing an API for a hot sauce review site.
-The technologies used are Node.js, Express and MongoDB
+This project consists of developing an API for a website to review hot sauces.
 
-### Built with
+The technologies used are Node.js, Express and MongoDB.
 
+
+## Features
+
+- CRUD (Create, Read, Update, Delete)
+- Authentication
+- Protected routes
+- File management with `multer` and `fs`
+- Server side forms data validation
+- MongoDB database
+
+
+## Tech Stack
+
+#### Server:
+- Javascript
 - Node.js
 - Express.js
 - MongoDB
 
-## Getting Started
+#### Client (not by me):
+- HTML
+- Sass / Scss
+- Typescript / Javascript
+- Angular
 
-### Clone the repo :
 
-`git clone https://github.com/Dev-BastienPruvost/piiquante-p6.git`
+## Run locally
 
-### In the backend folder
+1. Clone the project:
 
-### Install dependencies :
+```bash
+  git clone https://github.com/bastien-pruvost/piiquante-p6.git
+```
 
-`npm install`
+2. Go to the project directory:
 
-### Start Node.js API
+```bash
+  cd piiquante-p6
+```
 
-`npm start`
-To run the application without problems, the server must start on port 3000 (default port)
+3. Go to the backend directory:
 
-### In the frontend folder
+```bash
+  cd backend
+```
 
-### Install dependencies :
+4. Install dependencies:
 
-`npm install`
+```bash
+  pnpm install
+  # or
+  yarn install
+  # or
+  npm install
+```
 
-### Start frontend Angular application
+5. Run the backend server:
 
-`npm start`
-The application should run on `localhost` with default port `4200`. If the server runs on another port for any reason, this is printed to the console when the server starts, e.g. `Listening on port 4201.`
+```bash
+  pnpm start
+  # or
+  yarn start
+  # or
+  npm start
+```
 
-The application is accessible by going on this url : `http://localhost/4200` (Or another port, this will be specified in the console)
+6. In another terminal, go to the frontend directory:
 
-## Credits
+```bash
+  cd ../frontend
+```
 
-Project developed by Dev-BastienPruvost
+7. Install dependencies:
+
+```bash
+  pnpm install
+  # or
+  yarn install
+  # or
+  npm install
+```
+
+7. Run the frontend app:
+
+```bash
+  pnpm start
+  # or
+  yarn start
+  # or
+  npm start
+```
+
+Open [http://localhost:4200](http://localhost:4200) with your browser to see the result.
+
+API Routes can be accessed on [http://localhost:3000/api](http://localhost:3000/api)
+
+
+## Report bug / Support
+
+To report a bug or get help [open an issue](https://github.com/bastien-pruvost/piiquante-p6/issues).
+
+
+## Suggestions
+
+If you have any suggestion, feel free to [open an issue](https://github.com/bastien-pruvost/piiquante-p6/issues) with the tag "enhancement"
+
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and open a pull request.
+
+1. [Fork the project](https://github.com/bastien-pruvost/piiquante-p6/fork)
+2. Create your feature branch (`git checkout -b feature/my-feature`)
+3. Code your feature
+4. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+5. Push to the branch (`git push origin feature/my-feature`)
+6. [Open a pull request](https://github.com/bastien-pruvost/piiquante-p6/compare)
+
+You can also simply [open an issue](https://github.com/bastien-pruvost/piiquante-p6/issues) with the tag "enhancement".
+
+Don't forget to give the project a star! Thanks again!
+
+
+## License
+
+Distributed under the [MIT License](https://choosealicense.com/licenses/mit/).
+
+See `LICENSE` file for more information.
+
+
+
+<!-- prettier-ignore-end -->

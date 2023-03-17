@@ -1,21 +1,28 @@
 {
-  "name": "backend",
+  "name": "piiquante-p6",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
+  "description": "Integration of a model for a fake online donuts shop",
+  "keywords": [],
+  "homepage": "https://github.com/bastien-pruvost/piiquante-p6#readme",
+  "license": "MIT",
+  "author": {
+    "name": "Bastien Pruvost",
+    "url": "https://github.com/bastien-pruvost"
+  },
   "main": "server.js",
   "scripts": {
     "start": "nodemon -r dotenv/config server.js",
     "eslint": "eslint .",
     "eslint:fix": "eslint . --fix"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "eslint": "^8.17.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.20",
     "prettier": "^2.6.2"
   },
   "dependencies": {
