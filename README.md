@@ -7,7 +7,7 @@ piiquante-p6
 
  -->
 
-# HotTakes (Piiquante)
+# Piiquante - Bootcamp Project
 
 Sixth project of Openclassrooms Web Developer Bootcamp.
 
